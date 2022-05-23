@@ -29,14 +29,14 @@ public class LandGen : MonoBehaviour
             return texture;
         }
     }
-
+    public int WorldStep => worldSize / Texture.width;
 
     public int yShift = 0;              // Texture "Y" axis shift 
     public int xShift = 0;              // Texture "X" axis shift 
     public int textureScale = 2;        // Texture scale
 
     public int worldSize = 500;         // Size of the whole land "X" and "Z"
-    public int worldStep = 10;          // Place vert each worldStep value
+
     public int minHG = 0;               // Minimun hg of the land
     public int maxHG = 100;             // Maximum hg of the land
 
@@ -63,6 +63,7 @@ public class LandGen : MonoBehaviour
     private Vector3[] GenerateVerticies()
     {
         Texture2D texture = Texture;
+        int worldStep = WorldStep;
         int textureSize = texture.width;
         List<Vector3> verts = new List<Vector3>();
         for (int y = 0; y < texture.height; y++)

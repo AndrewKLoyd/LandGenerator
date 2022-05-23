@@ -30,7 +30,7 @@ public class LandGenWindow : EditorWindow
 
         EditorGUILayout.LabelField("Land settings");
         landGen.worldSize = EditorGUILayout.IntField("World size", landGen.worldSize);
-        landGen.worldStep = EditorGUILayout.IntField("World step", landGen.worldStep);
+        EditorGUILayout.LabelField("World step", landGen.WorldStep.ToString());
         landGen.minHG = EditorGUILayout.IntField("Minimum height", landGen.minHG);
         landGen.maxHG = EditorGUILayout.IntField("Maximum height", landGen.maxHG);
 

@@ -24,7 +24,7 @@ public class LandGenEditor : Editor
         EditorGUILayout.Space(20);
 
         EditorGUILayout.LabelField("Land settings");
-        EditorGUILayout.LabelField("World step", landGen.worldStep.ToString());
+        EditorGUILayout.LabelField("World step", landGen.WorldStep.ToString());
         EditorGUILayout.LabelField("World size", landGen.worldSize.ToString());
         EditorGUILayout.LabelField("Minimum height", landGen.minHG.ToString());
         EditorGUILayout.LabelField("Maximum height", landGen.maxHG.ToString());
