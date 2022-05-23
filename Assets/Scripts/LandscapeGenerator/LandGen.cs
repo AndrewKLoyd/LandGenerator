@@ -51,6 +51,8 @@ public class LandGen : MonoBehaviour
         Mesh mesh = BuildMesh(verts);
         meshFilter.mesh = mesh;
         MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        MeshCollider meshCollider = gameObject.AddComponent<MeshCollider>();
+        meshCollider.sharedMesh = mesh;
         //meshRenderer.material = new Material(Shader.Find("UniversalRenderPipeline/Lit"));
     }
 
