@@ -15,17 +15,19 @@ public class LandGenEditor : Editor
     private void GenerateMainView()
     {
         GUILayout.Box(landGen.Texture);
-        ////GUI.DrawTexture(new Rect(0, 0, 256, 256), landGen.Texture);
 
-        //EditorGUILayout.LabelField("Texture settings");
-        //landGen.xShift = EditorGUILayout.IntField("X coord shift", landGen.xShift);
-        //landGen.yShift = EditorGUILayout.IntField("Y coord shift", landGen.yShift);
-        //landGen.textureScale = EditorGUILayout.IntField("Texture scale", landGen.textureScale);
+        EditorGUILayout.LabelField("Texture settings");
+        EditorGUILayout.LabelField("X coord shift", landGen.xShift.ToString());
+        EditorGUILayout.LabelField("Y coord shift", landGen.yShift.ToString());
+        EditorGUILayout.LabelField("Texture scale", landGen.textureScale.ToString());
 
-        //EditorGUILayout.Space(50);
+        EditorGUILayout.Space(20);
 
-        //EditorGUILayout.LabelField("Land settings");
-        //landGen.minHG = EditorGUILayout.IntField("Minimum height", landGen.minHG);
-        //landGen.maxHG = EditorGUILayout.IntField("Maximum height", landGen.maxHG);
+        EditorGUILayout.LabelField("Land settings");
+        EditorGUILayout.LabelField("World step", landGen.worldStep.ToString());
+        EditorGUILayout.LabelField("World size", landGen.worldSize.ToString());
+        EditorGUILayout.LabelField("Minimum height", landGen.minHG.ToString());
+        EditorGUILayout.LabelField("Maximum height", landGen.maxHG.ToString());
+        if (GUILayout.Button("Open editor window")) { LandGenWindow.ShowWin(); }
     }
 }
