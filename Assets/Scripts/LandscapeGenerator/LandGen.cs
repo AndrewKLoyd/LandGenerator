@@ -5,32 +5,7 @@ using UnityEngine;
 
 public class LandGen : MonoBehaviour
 {
-    /// <summary>
-    /// Height map texture
-    /// </summary>
-    public Texture2D Texture
-    {
-        get
-        {
-            Texture2D texture = new Texture2D(256, 256, TextureFormat.RGBA32, 0, true);
-
-            for (int x = 0; x < texture.width; x++)
-            {
-                for (int y = 0; y < texture.height; y++)
-                {
-                    float xCoord = xShift + (float)x / (float)texture.width * textureScale;
-                    float yCoord = yShift + (float)y / (float)texture.height * textureScale;
-                    float sample = Mathf.PerlinNoise(xCoord, yCoord);
-                    Color pointColor = new Color(sample, sample, sample);
-                    texture.SetPixel(x, y, pointColor);
-                }
-            }
-            texture.Apply();
-            return texture;
-        }
-    }
-    public int WorldStep => worldSize / Texture.width;
-
+    private Texture2D texture;
     public int yShift = 0;              // Texture "Y" axis shift 
     public int xShift = 0;              // Texture "X" axis shift 
     public int textureScale = 2;        // Texture scale
@@ -39,6 +14,27 @@ public class LandGen : MonoBehaviour
 
     public int minHG = 0;               // Minimun hg of the land
     public int maxHG = 100;             // Maximum hg of the land
+
+    #region Props
+
+    /// <summary>
+    /// Height map texture
+    /// </summary>
+    public Texture2D Texture
+    {
+        get
+        {
+            if (texture == null)
+            {
+                texture = GenerateTexture();
+            }
+            return texture;
+        }
+    }
+    public int WorldStep => worldSize / Texture.width;
+
+    #endregion
+
 
     /// <summary>
     /// Generate land from hg map
@@ -153,4 +149,24 @@ public class LandGen : MonoBehaviour
         return trisList.ToArray();
     }
 
+
+    public void RegenerateTexture() => texture = null;
+    private Texture2D GenerateTexture()
+    {
+        Texture2D texture = new Texture2D(256, 256, TextureFormat.RGBA32, 0, true);
+
+        for (int x = 0; x < texture.width; x++)
+        {
+            for (int y = 0; y < texture.height; y++)
+            {
+                float xCoord = xShift + (float)x / (float)texture.width * textureScale;
+                float yCoord = yShift + (float)y / (float)texture.height * textureScale;
+                float sample = Mathf.PerlinNoise(xCoord, yCoord);
+                Color pointColor = new Color(sample, sample, sample);
+                texture.SetPixel(x, y, pointColor);
+            }
+        }
+        texture.Apply();
+        return texture;
+    }
 }

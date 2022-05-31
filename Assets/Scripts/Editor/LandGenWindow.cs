@@ -36,6 +36,7 @@ public class LandGenWindow : EditorWindow
 
         if (GUILayout.Button("Apply land")) ApplyLand();
         if (GUILayout.Button("Remove land")) RemoveLand();
+        if (GUI.changed) landGen.RegenerateTexture();
     }
 
 
