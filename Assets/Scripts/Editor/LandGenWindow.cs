@@ -18,28 +18,57 @@ public class LandGenWindow : EditorWindow
         if (GUILayout.Button("New land")) GenerateNewLand();
         landGen = Selection.activeGameObject?.GetComponent<LandGen>();
         if (landGen == null) return;
-
         GUILayout.Box(landGen.Texture);
-
-        EditorGUILayout.LabelField("Texture settings");
-        landGen.xShift = EditorGUILayout.IntField("X coord shift", landGen.xShift);
-        landGen.yShift = EditorGUILayout.IntField("Y coord shift", landGen.yShift);
-        landGen.textureScale = EditorGUILayout.IntField("Texture scale", landGen.textureScale);
 
         EditorGUILayout.Space(50);
 
-        EditorGUILayout.LabelField("Land settings");
-        landGen.worldSize = EditorGUILayout.IntField("World size", landGen.worldSize);
-        EditorGUILayout.LabelField("World step", landGen.WorldStep.ToString());
-        landGen.minHG = EditorGUILayout.IntField("Minimum height", landGen.minHG);
-        landGen.maxHG = EditorGUILayout.IntField("Maximum height", landGen.maxHG);
+        landGen.noiseType = (NoiseType)EditorGUI.EnumPopup(new Rect(5, 256 + 40, 100, 20), landGen.noiseType);
+        switch (landGen.noiseType)
+        {
+            case NoiseType.Perlin:
+                LoadPerlinNoiseSetup();
+                break;
+            case NoiseType.Simplex:
+                LoadSimplexNoiseSetup();
+                break;
+        }
 
         if (GUILayout.Button("Apply land")) ApplyLand();
         if (GUILayout.Button("Remove land")) RemoveLand();
         if (GUI.changed) landGen.RegenerateTexture();
     }
 
+    private void GenPopUpNoiseSelector()
+    {
 
+    }
+    private void LoadPerlinNoiseSetup()
+    {
+        EditorGUILayout.LabelField("Texture settings");
+        landGen.xShift = EditorGUILayout.IntField("X coord shift", landGen.xShift);
+        landGen.yShift = EditorGUILayout.IntField("Y coord shift", landGen.yShift);
+        landGen.textureScale = EditorGUILayout.IntField("Texture scale", landGen.textureScale);
+
+        EditorGUILayout.LabelField("Land settings");
+        landGen.worldSize = EditorGUILayout.IntField("World size", landGen.worldSize);
+        EditorGUILayout.LabelField("World step", landGen.WorldStep.ToString());
+        landGen.minHG = EditorGUILayout.IntField("Minimum height", landGen.minHG);
+        landGen.maxHG = EditorGUILayout.IntField("Maximum height", landGen.maxHG);
+    }
+
+    private void LoadSimplexNoiseSetup()
+    {
+        EditorGUILayout.LabelField("Texture settings");
+        landGen.seed = EditorGUILayout.LongField("Seed", landGen.seed);
+        landGen.xShift = EditorGUILayout.IntField("X coord shift", landGen.xShift);
+        landGen.yShift = EditorGUILayout.IntField("Y coord shift", landGen.yShift);
+        landGen.zShift = EditorGUILayout.IntField("Z coord shift", landGen.zShift);
+        landGen.textureScale = EditorGUILayout.IntField("Texture scale", landGen.textureScale);
+        landGen.worldSize = EditorGUILayout.IntField("World size", landGen.worldSize);
+        EditorGUILayout.LabelField("World step", landGen.WorldStep.ToString());
+        landGen.minHG = EditorGUILayout.IntField("Minimum height", landGen.minHG);
+        landGen.maxHG = EditorGUILayout.IntField("Maximum height", landGen.maxHG);
+    }
     private void GenerateNewLand()
     {
         GameObject go = new GameObject("LandGen");

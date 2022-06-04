@@ -6,8 +6,11 @@ using UnityEngine;
 public class LandGen : MonoBehaviour
 {
     private Texture2D texture;
+    public NoiseType noiseType;
+    public long seed = 0;
     public int yShift = 0;              // Texture "Y" axis shift 
     public int xShift = 0;              // Texture "X" axis shift 
+    public int zShift = 0;
     public int textureScale = 2;        // Texture scale
 
     public int worldSize = 500;         // Size of the whole land "X" and "Z"
@@ -26,7 +29,18 @@ public class LandGen : MonoBehaviour
         {
             if (texture == null)
             {
-                texture = GenerateTexture();
+                switch (noiseType)
+                {
+                    case NoiseType.Perlin:
+                        texture = GeneratePerlinNoiseTexture();
+                        break;
+                    case NoiseType.Simplex:
+                        texture = GenerateOpenSimplexTexture();
+                        break;
+                    default:
+                        texture = GeneratePerlinNoiseTexture();
+                        break;
+                }
             }
             return texture;
         }
@@ -151,7 +165,7 @@ public class LandGen : MonoBehaviour
 
 
     public void RegenerateTexture() => texture = null;
-    private Texture2D GenerateTexture()
+    private Texture2D GeneratePerlinNoiseTexture()
     {
         Texture2D texture = new Texture2D(256, 256, TextureFormat.RGBA32, 0, true);
 
@@ -169,4 +183,30 @@ public class LandGen : MonoBehaviour
         texture.Apply();
         return texture;
     }
+
+    private Texture2D GenerateOpenSimplexTexture()
+    {
+        Texture2D texture = new Texture2D(256, 256, TextureFormat.RGBA32, 0, true);
+        OpenSimplexNoise noise = new OpenSimplexNoise(seed);
+        for (int x = 0; x < texture.width; x++)
+        {
+            for (int y = 0; y < texture.height; y++)
+            {
+                float xCoord = xShift + (float)x / (float)texture.width * textureScale;
+                float yCoord = yShift + (float)y / (float)texture.height * textureScale;
+                float sample = (float)noise.eval((double)xCoord, (double)yCoord, (double)zShift);
+                sample = (sample * 0.5f) + 0.5f; // Because its -.5 to .5 value
+                Color pointColor = new Color(sample, sample, sample);
+                texture.SetPixel(x, y, pointColor);
+            }
+        }
+        texture.Apply();
+        return texture;
+    }
+}
+
+public enum NoiseType
+{
+    Perlin,
+    Simplex
 }
